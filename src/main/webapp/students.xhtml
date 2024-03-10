@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+    <title>Student List</title>
+    <h:outputStylesheet library="webjars" name="bootstrap/5.3.3/css/bootstrap.min.css" />
+</h:head>
+
+<body>
+
+<!-- Header -->
+<div class="header">
+    <h1>Student List</h1>
+</div>
+
+<!-- Content -->
+<h:form>
+    <h:dataTable value="#{StudentListBean.allStudents}" var="student"
+                 class="table-custom"
+                 styleClass="table table-striped"
+                 headerClass="table-dark table-center"
+                 rowClasses="text-center, text-center, text-center, text-center"
+                 columnClasses="table-primary,table-danger,table-primary,table-danger">
+        <h:column>
+            <f:facet name="header">ID</f:facet>
+            <h:outputText value="#{student.id}" />
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">Name</f:facet>
+            <h:panelGroup rendered="#{!student.editing}">
+                <h:outputText value="#{student.fullName}" />
+            </h:panelGroup>
+            <h:panelGroup rendered="#{student.editing}">
+                <h:inputText value="#{student.fullName}" />
+            </h:panelGroup>
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">Date of Birth</f:facet>
+            <h:panelGroup rendered="#{!student.editing}">
+                <h:outputText value="#{student.birthday}" />
+            </h:panelGroup>
+            <h:panelGroup rendered="#{student.editing}">
+                <h:inputText value="#{student.birthday}" converter="localDateConverter"/>
+            </h:panelGroup>
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">Sexe</f:facet>
+            <h:panelGroup rendered="#{!student.editing}">
+                <h:outputText value="#{student.sex}" />
+            </h:panelGroup>
+            <h:panelGroup rendered="#{student.editing}">
+                <h:selectOneMenu value="#{student.sex}" >
+                    <f:selectItem itemValue="Femme" itemLabel="Femme" />
+                    <f:selectItem itemValue="Homme" itemLabel="Homme" />
+                </h:selectOneMenu>
+            </h:panelGroup>
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">Email</f:facet>
+            <h:panelGroup rendered="#{!student.editing}">
+                <h:outputText value="#{student.email}" />
+            </h:panelGroup>
+            <h:panelGroup rendered="#{student.editing}">
+                <h:inputText value="#{student.email}" />
+            </h:panelGroup>
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">Actions</f:facet>
+            <h:commandButton value="Edit" action="#{StudentListBean.addEditing(student)}" class="btn btn-primary" />
+            <h:commandButton value="Delete" action="#{StudentListBean.deleteStudent(student)}" class="btn btn-danger" />
+        </h:column>
+    </h:dataTable>
+
+    <h:commandButton value="Add Student" action="#{StudentListBean.showAddStudentForm}" styleClass="btn btn-success" />
+    <h:commandButton value="Save Changes" action="#{StudentListBean.saveChanges}" styleClass="btn btn-success" />
+    <h:messages globalOnly="true" layout="table" styleClass="message" />
+
+    <h:panelGroup layout="block" rendered="#{StudentListBean.addStudentForm}">
+
+        <div class="form-group">
+            <h:outputLabel value="Full Name : "/>
+            <h:inputText value="#{StudentListBean.newStudent.fullName}" styleClass="form-control"/>
+        </div>
+
+        <div class="form-group">
+            <h:outputLabel value="Birthdate : "/>
+            <h:inputText value="#{StudentListBean.newStudent.birthday}" styleClass="form-control" converter="localDateConverter"/>
+        </div>
+
+        <div class="form-group">
+            <h:outputLabel value="Sexe : "/>
+            <h:selectOneMenu value="#{StudentListBean.newStudent.sex}" styleClass="form-select">
+                <f:selectItem itemValue="Femme" itemLabel="Femme" />
+                <f:selectItem itemValue="Homme" itemLabel="Homme" />
+            </h:selectOneMenu>
+        </div>
+
+        <div class="form-group">
+            <h:outputLabel value="Email : "/>
+            <h:inputText value="#{StudentListBean.newStudent.email}" styleClass="form-control"/>
+        </div>
+
+    <br> </br>
+
+        <div class="form-group">
+            <h:commandButton value="Save Student" action="#{StudentListBean.addStudent}" class="btn btn-primary"/>
+        </div>
+
+    </h:panelGroup>
+
+</h:form>
+
+<!-- Footer -->
+<div class="footer">
+
+</div>
+</body>
+</html>
